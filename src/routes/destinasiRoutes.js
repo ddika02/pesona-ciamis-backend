@@ -21,6 +21,6 @@ router.get("/destinasi", getAllDestinasi);
 router.put("/destinasi/:id", editDestinasi);
 
 // Hapus destinasi
-router.delete('/:id', deleteDestinasi);
+router.delete('/destinasi/:id', deleteDestinasi);
 
 module.exports = router;

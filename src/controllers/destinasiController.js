@@ -1,6 +1,6 @@
 const { pool } = require("../config/db");
 
-// tambah data controller
+// Tambah data destinasi
 const tambahDestinasi = async (req, res) => {
   const {
     nama_destinasi,
@@ -54,6 +54,19 @@ const tambahDestinasi = async (req, res) => {
   }
 };
 
+// Ambil semua data destinasi
+const getAllDestinasi = async (req, res) => {
+  try {
+    const [rows] = await pool.query(
+      "SELECT * FROM destinasi_wisata ORDER BY created_at DESC"
+    );
+    res.json({ data: rows });
+  } catch (err) {
+    console.error("Gagal mengambil data destinasi:", err);
+    res.status(500).json({ message: "Gagal mengambil data dari database." });
+  }
+};
+
 // Ambil satu data destinasi berdasarkan ID
 const getDestinasiById = async (req, res) => {
   const { id } = req.params;
@@ -75,20 +88,7 @@ const getDestinasiById = async (req, res) => {
   }
 };
 
-// Ambil semua data destinasi
-const getAllDestinasi = async (req, res) => {
-  try {
-    const [rows] = await pool.query(
-      "SELECT * FROM destinasi_wisata ORDER BY created_at DESC"
-    );
-    res.json({ data: rows });
-  } catch (err) {
-    console.error("Gagal mengambil data destinasi:", err);
-    res.status(500).json({ message: "Gagal mengambil data dari database." });
-  }
-};
-
-//Edit Data Controller
+// Edit data destinasi
 const editDestinasi = async (req, res) => {
   const { id } = req.params;
   const {
@@ -142,7 +142,7 @@ const editDestinasi = async (req, res) => {
   }
 };
 
-// Hapus destinasi berdasarkan ID
+// Hapus data destinasi
 const deleteDestinasi = async (req, res) => {
   const { id } = req.params;
 
@@ -164,9 +164,9 @@ const deleteDestinasi = async (req, res) => {
 };
 
 module.exports = {
+  tambahDestinasi,
   getAllDestinasi,
   getDestinasiById,
-  tambahDestinasi,
   editDestinasi,
-   deleteDestinasi
+  deleteDestinasi,
 };

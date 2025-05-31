@@ -20,7 +20,7 @@ testConnection();
 
 // Routes
 app.use('/api/auth', authRoutes);
-app.use('/api/destinasi', destinasiRoutes);
+app.use('/api', destinasiRoutes);
 
 // Route default
 app.get('/', (req, res) => {

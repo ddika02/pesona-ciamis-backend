@@ -3,7 +3,9 @@ const cors = require('cors');
 const { testConnection } = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const destinasiRoutes = require('./routes/destinasiRoutes');
-
+const kritikSaranRoutes = require('./routes/kritikSaranRoutes');
+const pageRoutes = require('./routes/pageRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 require('dotenv').config();
 
@@ -21,6 +23,9 @@ testConnection();
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api', destinasiRoutes);
+app.use('/api', kritikSaranRoutes);
+app.use('/api', pageRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Route default
 app.get('/', (req, res) => {

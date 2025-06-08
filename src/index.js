@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const { testConnection } = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const destinasiRoutes = require('./routes/destinasiRoutes');
@@ -10,12 +11,15 @@ const adminRoutes = require('./routes/adminRoutes');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Serve static files from uploads directory
+app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
 // Test koneksi database
 testConnection();
@@ -52,7 +56,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Jalankan server
 app.listen(PORT, () => {
-  console.log(`Server berjalan di http://localhost:${PORT}`);
+  console.log(`Server berjalan di port ${PORT}`);
 });

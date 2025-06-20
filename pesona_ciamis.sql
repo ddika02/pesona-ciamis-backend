@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 08, 2025 at 11:54 PM
+-- Generation Time: Jun 15, 2025 at 01:32 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -46,8 +46,8 @@ CREATE TABLE `destinasi_wisata` (
 --
 
 INSERT INTO `destinasi_wisata` (`id`, `nama_destinasi`, `alamat`, `asal_usul`, `daya_tarik`, `fasilitas`, `harga_jam`, `deskripsi`, `gambar_utama`, `created_at`, `updated_at`) VALUES
-(1, 'Pantai Pangandaran', 'Jl. Pantai Pangandaran, Ciamis', 'Pantai terkenal di Ciamis', 'Pemandangan laut yang indah', 'Toilet, Parkir, Warung Makan', 'Rp 10.000 per orang', 'Pantai dengan pasir putih dan ombak yang cocok untuk berselancar', '/uploads/destinasi/destinasi-1749418847295-951588278.webp', '2025-06-08 21:03:40', '2025-06-08 21:40:47'),
-(3, '\"Ciung Wanara\"', '\"Jalan Raya Ciamis-Banjar, Ciamis\"', '\"Tempat bersejarah dari kerajaan Galuh\"', '\"Pemandangan alam yang indah dan nilai sejarah\"', '\"Toilet, Parkir, Tempat Ibadah\"', '\"Rp 10.000 / orang\"', '\"Objek wisata budaya dan sejarah di Ciamis\"', '/uploads/destinasi/destinasi-1749418143081-254740572.webp', '2025-06-08 21:29:03', '2025-06-08 21:29:03');
+(2, 'Pantai Pangandaran', 'Jl. Pantai Pangandaran, Ciamis', 'Pantai terkenal di Ciamis', 'Pemandangan laut yang indah', 'Toilet, Parkir, Warung Makan', 'Rp 10.000 per orang', 'Pantai dengan pasir putih dan ombak yang cocok untuk berselancar', '/uploads/destinasi/destinasi-1749986320261-925999309.webp', '2025-06-15 10:57:09', '2025-06-15 11:18:40'),
+(3, '\"Ciung Wanara\"', '\"Jalan Raya Ciamis-Banjar, Ciamis\"', '\"Tempat bersejarah dari kerajaan Galuh\"', '\"Pemandangan alam yang indah dan nilai sejarah\"', '\"Toilet, Parkir, Tempat Ibadah\"', '\"Rp 10.000 / orang\"', '\"Objek wisata budaya dan sejarah di Ciamis\"', '/uploads/destinasi/destinasi-1749986036775-492298381.webp', '2025-06-15 11:13:56', '2025-06-15 11:13:56');
 
 -- --------------------------------------------------------
 
@@ -61,13 +61,6 @@ CREATE TABLE `gambar_destinasi` (
   `url_gambar` varchar(255) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `gambar_destinasi`
---
-
-INSERT INTO `gambar_destinasi` (`id`, `destinasi_id`, `url_gambar`, `created_at`) VALUES
-(2, 1, '/uploads/destinasi/destinasi-1749419434780-32710436.webp', '2025-06-08 21:50:34');
 
 -- --------------------------------------------------------
 
@@ -83,6 +76,13 @@ CREATE TABLE `kritik_saran` (
   `status` enum('baru','dibaca','diarsipkan') DEFAULT 'baru',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `kritik_saran`
+--
+
+INSERT INTO `kritik_saran` (`id`, `nama`, `email`, `pesan`, `status`, `created_at`) VALUES
+(2, 'John Doe', 'john@example.com', 'Website ini sangat membantu untuk menemukan destinasi wisata di Ciamis', 'baru', '2025-06-15 11:01:17');
 
 -- --------------------------------------------------------
 
@@ -104,9 +104,10 @@ CREATE TABLE `pages` (
 --
 
 INSERT INTO `pages` (`id`, `slug`, `title`, `content`, `created_at`, `updated_at`) VALUES
-(1, 'tentang-kami', 'Tentang Kami', '<h1>Tentang Pesona Ciamis</h1><p>Pesona Ciamis adalah platform yang menyediakan informasi tentang destinasi wisata di Kabupaten Ciamis.</p>', '2025-06-08 14:18:32', '2025-06-08 14:18:32'),
-(2, 'kontak', 'Kontak', '<h1>Kontak Kami</h1><p>Hubungi kami melalui email: info@pesonaciamis.com</p>', '2025-06-08 14:18:32', '2025-06-08 14:18:32'),
-(3, 'kebijakan-privasi', 'Kebijakan Privasi', '<h1>Kebijakan Privasi</h1><p>Kebijakan privasi Pesona Ciamis...</p>', '2025-06-08 14:18:32', '2025-06-08 14:18:32');
+(1, 'tentang-kami', 'Tentang Kami', '<h1>Tentang Pesona Ciamis</h1><p>Pesona Ciamis adalah platform yang menyediakan informasi tentang destinasi wisata di Kabupaten Ciamis.</p>', '2025-06-15 10:33:44', '2025-06-15 10:33:44'),
+(2, 'kontak', 'Kontak', '<h1>Kontak Kami</h1><p>Hubungi kami melalui email: info@pesonaciamis.com</p>', '2025-06-15 10:33:44', '2025-06-15 10:33:44'),
+(3, 'kebijakan-privasi', 'Kebijakan Privasi', '<h1>Kebijakan Privasi</h1><p>Kebijakan privasi Pesona Ciamis...</p>', '2025-06-15 10:33:44', '2025-06-15 10:33:44'),
+(4, 'about', 'beranda', 'Pesona Ciamis adalah platform untuk mempromosikan pariwisata di Kabupaten Ciamis', '2025-06-15 11:09:26', '2025-06-15 11:10:54');
 
 -- --------------------------------------------------------
 
@@ -128,9 +129,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `created_at`) VALUES
-(1, 'admin', 'admin@pesonaciamis.com', '$2b$10$.0PTtjZT.JHaCpxbzT2vyuDGSjEpl/z8SAZlR45cd5qcT5hHzoqAS', 'user', '2025-06-08 19:56:03'),
-(2, 'user1', 'user1@pesonaciamis.com', '$2b$10$R1vRASgPWQT/dsMwe9zyz.0O2DkejiAk4O7h2l1DHdoqJBg4TpLmm', 'user', '2025-06-08 19:56:03'),
-(3, 'user2', 'user2@pesonaciamis.com', '$2b$10$JpzKrrYyHHfkdt07Gtt36ucpMieNBAaEe2VEvQwF9kn2jDjLNWafi', 'user', '2025-06-08 19:56:03');
+(2, 'admin', 'admin@gmail.com', '$2b$10$f60yG1.roFmXDjYQrlbKhO0F4f7qKcLHeskniw4tqaFb9GYt1234y', 'admin', '2025-06-15 10:36:19');
 
 --
 -- Indexes for dumped tables
@@ -184,25 +183,25 @@ ALTER TABLE `destinasi_wisata`
 -- AUTO_INCREMENT for table `gambar_destinasi`
 --
 ALTER TABLE `gambar_destinasi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `kritik_saran`
 --
 ALTER TABLE `kritik_saran`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `pages`
 --
 ALTER TABLE `pages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables

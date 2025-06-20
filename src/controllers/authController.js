@@ -1,6 +1,6 @@
-const User = require('../models/userModel');
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
+const User = require("../models/userModel");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 // Controller untuk login
 exports.login = async (req, res) => {
@@ -10,33 +10,33 @@ exports.login = async (req, res) => {
     // Validasi input
     if (!username || !password) {
       return res.status(400).json({
-        status: 'error',
-        message: 'Username dan password diperlukan'
+        status: "error",
+        message: "Username dan password diperlukan",
       });
     }
 
     // Cari user berdasarkan username
     const user = await User.findByUsername(username);
-    console.log('User ditemukan:', user);
+    console.log("User ditemukan:", user);
 
     // Jika user tidak ditemukan
     if (!user) {
       return res.status(401).json({
-        status: 'error',
-        message: 'Username atau password salah'
+        status: "error",
+        message: "Username atau password salah",
       });
     }
 
     // Verifikasi password
-    console.log('Password dari request:', password);
-    console.log('Password dari database:', user.password);
+    console.log("Password dari request:", password);
+    console.log("Password dari database:", user.password);
     const isPasswordValid = await User.verifyPassword(password, user.password);
-    console.log('Password valid:', isPasswordValid);
-    
+    console.log("Password valid:", isPasswordValid);
+
     if (!isPasswordValid) {
       return res.status(401).json({
-        status: 'error',
-        message: 'Username atau password salah'
+        status: "error",
+        message: "Username atau password salah",
       });
     }
 
@@ -49,22 +49,22 @@ exports.login = async (req, res) => {
 
     // Kirim respons dengan token
     res.status(200).json({
-      status: 'success',
-      message: 'Login berhasil',
+      status: "success",
+      message: "Login berhasil",
       data: {
         user: {
           id: user.id,
           username: user.username,
-          email: user.email
+          email: user.email,
         },
-        token
-      }
+        token,
+      },
     });
   } catch (error) {
-    console.error('Error login:', error);
+    console.error("Error login:", error);
     res.status(500).json({
-      status: 'error',
-      message: 'Terjadi kesalahan pada server'
+      status: "error",
+      message: "Terjadi kesalahan pada server",
     });
   }
 };
@@ -73,25 +73,25 @@ exports.login = async (req, res) => {
 exports.getProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
-    
+
     if (!user) {
       return res.status(404).json({
-        status: 'error',
-        message: 'User tidak ditemukan'
+        status: "error",
+        message: "User tidak ditemukan",
       });
     }
 
     res.status(200).json({
-      status: 'success',
+      status: "success",
       data: {
-        user
-      }
+        user,
+      },
     });
   } catch (error) {
-    console.error('Error mendapatkan profil:', error);
+    console.error("Error mendapatkan profil:", error);
     res.status(500).json({
-      status: 'error',
-      message: 'Terjadi kesalahan pada server'
+      status: "error",
+      message: "Terjadi kesalahan pada server",
     });
   }
 };

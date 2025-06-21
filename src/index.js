@@ -7,6 +7,7 @@ const destinasiRoutes = require('./routes/destinasiRoutes');
 const kritikSaranRoutes = require('./routes/kritikSaranRoutes');
 const pageRoutes = require('./routes/pageRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const ulasanRoutes = require('./routes/ulasanRoutes'); // Tambahkan ini
 
 require('dotenv').config();
 
@@ -29,6 +30,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api', destinasiRoutes);
 app.use('/api', kritikSaranRoutes);
 app.use('/api', pageRoutes);
+app.use('/api', ulasanRoutes); // Tambahkan ini
 app.use('/api/admin', adminRoutes);
 
 // Route default

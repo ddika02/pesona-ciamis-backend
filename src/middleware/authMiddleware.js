@@ -47,3 +47,17 @@ exports.protect = async (req, res, next) => {
     });
   }
 };
+
+// Tambahkan fungsi restrictTo untuk membatasi akses berdasarkan role
+exports.restrictTo = (...roles) => {
+  return (req, res, next) => {
+    // Periksa apakah role user ada dalam daftar roles yang diizinkan
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({
+        status: 'error',
+        message: 'Anda tidak memiliki izin untuk melakukan operasi ini'
+      });
+    }
+    next();
+  };
+};

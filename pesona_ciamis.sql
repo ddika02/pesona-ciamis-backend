@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 15, 2025 at 01:32 PM
+-- Generation Time: Jun 21, 2025 at 04:44 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -112,6 +112,29 @@ INSERT INTO `pages` (`id`, `slug`, `title`, `content`, `created_at`, `updated_at
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `ulasan_destinasi`
+--
+
+CREATE TABLE `ulasan_destinasi` (
+  `id` int(11) NOT NULL,
+  `destinasi_id` int(11) NOT NULL,
+  `nama_pengulas` varchar(100) NOT NULL,
+  `rating` int(1) NOT NULL,
+  `komentar` text NOT NULL,
+  `tanggal` date NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `ulasan_destinasi`
+--
+
+INSERT INTO `ulasan_destinasi` (`id`, `destinasi_id`, `nama_pengulas`, `rating`, `komentar`, `tanggal`, `created_at`) VALUES
+(1, 2, 'Maulana', 4, 'Buat Yg Mau Wisata Sejarah,Bisa Kesini,Apalagi Karena Sebagian Tempatnya Makem,Tapi Bisa Ngadem Sambil Lihat Kereta Lewat,Bisa Datang Kesini !!', '2025-06-21', '2025-06-21 14:40:14');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -162,6 +185,13 @@ ALTER TABLE `pages`
   ADD UNIQUE KEY `slug` (`slug`);
 
 --
+-- Indexes for table `ulasan_destinasi`
+--
+ALTER TABLE `ulasan_destinasi`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `destinasi_id` (`destinasi_id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -198,6 +228,12 @@ ALTER TABLE `pages`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `ulasan_destinasi`
+--
+ALTER TABLE `ulasan_destinasi`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
@@ -212,6 +248,12 @@ ALTER TABLE `users`
 --
 ALTER TABLE `gambar_destinasi`
   ADD CONSTRAINT `gambar_destinasi_ibfk_1` FOREIGN KEY (`destinasi_id`) REFERENCES `destinasi_wisata` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `ulasan_destinasi`
+--
+ALTER TABLE `ulasan_destinasi`
+  ADD CONSTRAINT `ulasan_destinasi_ibfk_1` FOREIGN KEY (`destinasi_id`) REFERENCES `destinasi_wisata` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

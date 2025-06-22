@@ -113,10 +113,28 @@ const getDestinasiById = async (req, res) => {
       [id]
     );
 
+    // Ambil ulasan
+    const [ulasan] = await pool.query(
+      "SELECT * FROM ulasan_destinasi WHERE destinasi_id = ? ORDER BY created_at DESC",
+      [id]
+    );
+
+    // Hitung rata-rata rating
+    let avgRating = 0;
+    if (ulasan.length > 0) {
+      const totalRating = ulasan.reduce((sum, item) => sum + item.rating, 0);
+      avgRating = totalRating / ulasan.length;
+    }
+
     // Gabungkan data
     const result = {
       ...destinasi[0],
-      gambar_tambahan: gambarTambahan
+      gambar_tambahan: gambarTambahan,
+      ulasan: ulasan,
+      rating_info: {
+        count: ulasan.length,
+        average_rating: avgRating.toFixed(1)
+      }
     };
 
     res.json({ data: result });

@@ -114,7 +114,7 @@ router.put(
 );
 
 // Ambil semua gambar berdasarkan ID destinasi
-router.get("/gambar/:id", authMiddleware.protect, getGambarDestinasi);
+router.get("/gambar/:id", getGambarDestinasi); // Hapus authMiddleware.protect
 
 module.exports = router;
 

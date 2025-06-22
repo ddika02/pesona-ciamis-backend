@@ -1,6 +1,6 @@
 const { pool } = require("../config/db");
-const path = require('path');
-const fs = require('fs');
+const path = require("path");
+const fs = require("fs");
 
 // Tambah data destinasi
 const tambahDestinasi = async (req, res) => {
@@ -42,19 +42,19 @@ const tambahDestinasi = async (req, res) => {
       fasilitas,
       harga_jam,
       deskripsi,
-      gambar_utama
+      gambar_utama,
     ]);
 
     // Jika ada multiple gambar, simpan ke tabel gambar_destinasi
     if (req.files && req.files.length > 0) {
       const destinasiId = result.insertId;
-      const gambarValues = req.files.map(file => [
+      const gambarValues = req.files.map((file) => [
         destinasiId,
-        `/uploads/destinasi/${file.filename}`
+        `/uploads/destinasi/${file.filename}`,
       ]);
 
       await pool.query(
-        'INSERT INTO gambar_destinasi (destinasi_id, url_gambar) VALUES ?',
+        "INSERT INTO gambar_destinasi (destinasi_id, url_gambar) VALUES ?",
         [gambarValues]
       );
     }
@@ -70,7 +70,7 @@ const tambahDestinasi = async (req, res) => {
         fasilitas,
         harga_jam,
         deskripsi,
-        gambar_utama
+        gambar_utama,
       },
     });
   } catch (err) {
@@ -133,8 +133,8 @@ const getDestinasiById = async (req, res) => {
       ulasan: ulasan,
       rating_info: {
         count: ulasan.length,
-        average_rating: avgRating.toFixed(1)
-      }
+        average_rating: avgRating.toFixed(1),
+      },
     };
 
     res.json({ data: result });
@@ -180,10 +180,10 @@ const editDestinasi = async (req, res) => {
       // Hapus gambar lama jika ada
       if (destinasi[0].gambar_utama) {
         const oldImagePath = path.join(
-          __dirname, 
-          '..', 
-          '..', 
-          destinasi[0].gambar_utama.replace(/^\/+/, '')
+          __dirname,
+          "..",
+          "..",
+          destinasi[0].gambar_utama.replace(/^\/+/, "")
         );
         if (fs.existsSync(oldImagePath)) {
           fs.unlinkSync(oldImagePath);
@@ -229,10 +229,10 @@ const editDestinasi = async (req, res) => {
       // Hapus file fisik
       for (const img of oldImages) {
         const oldImagePath = path.join(
-          __dirname, 
-          '..', 
-          '..', 
-          img.url_gambar.replace(/^\/+/, '')
+          __dirname,
+          "..",
+          "..",
+          img.url_gambar.replace(/^\/+/, "")
         );
         if (fs.existsSync(oldImagePath)) {
           fs.unlinkSync(oldImagePath);
@@ -240,19 +240,18 @@ const editDestinasi = async (req, res) => {
       }
 
       // Hapus record dari database
-      await pool.query(
-        "DELETE FROM gambar_destinasi WHERE destinasi_id = ?",
-        [id]
-      );
+      await pool.query("DELETE FROM gambar_destinasi WHERE destinasi_id = ?", [
+        id,
+      ]);
 
       // Simpan gambar baru
-      const gambarValues = req.files.map(file => [
+      const gambarValues = req.files.map((file) => [
         id,
-        `/uploads/destinasi/${file.filename}`
+        `/uploads/destinasi/${file.filename}`,
       ]);
 
       await pool.query(
-        'INSERT INTO gambar_destinasi (destinasi_id, url_gambar) VALUES ?',
+        "INSERT INTO gambar_destinasi (destinasi_id, url_gambar) VALUES ?",
         [gambarValues]
       );
     }
@@ -288,10 +287,10 @@ const deleteDestinasi = async (req, res) => {
     // Hapus file gambar utama jika ada
     if (destinasi[0].gambar_utama) {
       const mainImagePath = path.join(
-        __dirname, 
-        '..', 
-        '..', 
-        destinasi[0].gambar_utama.replace(/^\/+/, '')
+        __dirname,
+        "..",
+        "..",
+        destinasi[0].gambar_utama.replace(/^\/+/, "")
       );
       if (fs.existsSync(mainImagePath)) {
         fs.unlinkSync(mainImagePath);
@@ -301,10 +300,10 @@ const deleteDestinasi = async (req, res) => {
     // Hapus file gambar tambahan
     for (const img of gambarTambahan) {
       const imagePath = path.join(
-        __dirname, 
-        '..', 
-        '..', 
-        img.url_gambar.replace(/^\/+/, '')
+        __dirname,
+        "..",
+        "..",
+        img.url_gambar.replace(/^\/+/, "")
       );
       if (fs.existsSync(imagePath)) {
         fs.unlinkSync(imagePath);
@@ -338,7 +337,7 @@ const tambahGambarDestinasi = async (req, res) => {
     if (destinasi.length === 0) {
       // Hapus file yang sudah diupload jika destinasi tidak ditemukan
       if (req.files && req.files.length > 0) {
-        req.files.forEach(file => {
+        req.files.forEach((file) => {
           fs.unlinkSync(file.path);
         });
       }
@@ -347,17 +346,19 @@ const tambahGambarDestinasi = async (req, res) => {
 
     // Jika tidak ada file yang diupload
     if (!req.files || req.files.length === 0) {
-      return res.status(400).json({ message: "Tidak ada gambar yang diupload." });
+      return res
+        .status(400)
+        .json({ message: "Tidak ada gambar yang diupload." });
     }
 
     // Simpan gambar ke database
-    const gambarValues = req.files.map(file => [
+    const gambarValues = req.files.map((file) => [
       id,
-      `/uploads/destinasi/${file.filename}`
+      `/uploads/destinasi/${file.filename}`,
     ]);
 
     await pool.query(
-      'INSERT INTO gambar_destinasi (destinasi_id, url_gambar) VALUES ?',
+      "INSERT INTO gambar_destinasi (destinasi_id, url_gambar) VALUES ?",
       [gambarValues]
     );
 
@@ -365,8 +366,8 @@ const tambahGambarDestinasi = async (req, res) => {
       message: "Gambar berhasil ditambahkan",
       data: {
         destinasi_id: id,
-        gambar: req.files.map(file => `/uploads/destinasi/${file.filename}`)
-      }
+        gambar: req.files.map((file) => `/uploads/destinasi/${file.filename}`),
+      },
     });
   } catch (err) {
     console.error("Gagal menambahkan gambar:", err);
@@ -391,20 +392,17 @@ const hapusGambarDestinasi = async (req, res) => {
 
     // Hapus file fisik
     const imagePath = path.join(
-      __dirname, 
-      '..', 
-      '..', 
-      gambar[0].url_gambar.replace(/^\/+/, '')
+      __dirname,
+      "..",
+      "..",
+      gambar[0].url_gambar.replace(/^\/+/, "")
     );
     if (fs.existsSync(imagePath)) {
       fs.unlinkSync(imagePath);
     }
 
     // Hapus dari database
-    await pool.query(
-      "DELETE FROM gambar_destinasi WHERE id = ?",
-      [gambar_id]
-    );
+    await pool.query("DELETE FROM gambar_destinasi WHERE id = ?", [gambar_id]);
 
     res.json({ message: "Gambar berhasil dihapus." });
   } catch (err) {
@@ -413,60 +411,57 @@ const hapusGambarDestinasi = async (req, res) => {
   }
 };
 
-// Update gambar utama destinasi
 const updateGambarUtama = async (req, res) => {
   const { id } = req.params;
+  const { gambar_utama } = req.body;
+
+  if (!gambar_utama) {
+    return res.status(400).json({ message: "URL gambar utama diperlukan." });
+  }
 
   try {
-    // Cek apakah destinasi ada
-    const [destinasi] = await pool.query(
+    const [cekDestinasi] = await pool.query(
       "SELECT * FROM destinasi_wisata WHERE id = ?",
       [id]
     );
 
-    if (destinasi.length === 0) {
-      // Hapus file yang sudah diupload jika destinasi tidak ditemukan
-      if (req.file) {
-        fs.unlinkSync(req.file.path);
-      }
+    if (cekDestinasi.length === 0) {
       return res.status(404).json({ message: "Destinasi tidak ditemukan." });
     }
 
-    // Jika tidak ada file yang diupload
-    if (!req.file) {
-      return res.status(400).json({ message: "Tidak ada gambar yang diupload." });
-    }
-
-    // Hapus gambar lama jika ada
-    if (destinasi[0].gambar_utama) {
-      const oldImagePath = path.join(
-        __dirname, 
-        '..', 
-        '..', 
-        destinasi[0].gambar_utama.replace(/^\/+/, '')
-      );
-      if (fs.existsSync(oldImagePath)) {
-        fs.unlinkSync(oldImagePath);
-      }
-    }
-
-    // Update gambar utama di database
-    const gambar_utama = `/uploads/destinasi/${req.file.filename}`;
+    // Simpan URL gambar ke kolom gambar_utama
     await pool.query(
       "UPDATE destinasi_wisata SET gambar_utama = ? WHERE id = ?",
       [gambar_utama, id]
     );
 
     res.json({
-      message: "Gambar utama berhasil diperbarui",
+      message: "Thumbnail berhasil diperbarui.",
       data: {
         id,
-        gambar_utama
-      }
+        gambar_utama,
+      },
     });
   } catch (err) {
-    console.error("Gagal memperbarui gambar utama:", err);
-    res.status(500).json({ message: "Gagal memperbarui gambar di database." });
+    console.error("Gagal update gambar utama:", err);
+    res.status(500).json({ message: "Gagal memperbarui gambar utama." });
+  }
+};
+
+// Ambil semua gambar milik destinasi
+const getGambarDestinasi = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const [gambar] = await pool.query(
+      "SELECT * FROM gambar_destinasi WHERE destinasi_id = ?",
+      [id]
+    );
+
+    res.json({ data: gambar });
+  } catch (err) {
+    console.error("Gagal mengambil gambar:", err);
+    res.status(500).json({ message: "Gagal mengambil gambar dari database." });
   }
 };
 
@@ -478,5 +473,6 @@ module.exports = {
   deleteDestinasi,
   tambahGambarDestinasi,
   hapusGambarDestinasi,
-  updateGambarUtama
+  updateGambarUtama,
+  getGambarDestinasi,
 };

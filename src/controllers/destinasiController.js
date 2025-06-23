@@ -79,12 +79,16 @@ const tambahDestinasi = async (req, res) => {
   }
 };
 
-// Ambil semua data destinasi
+// Ambil semua data destinasi + rating
 const getAllDestinasi = async (req, res) => {
   try {
-    const [rows] = await pool.query(
-      "SELECT * FROM destinasi_wisata ORDER BY created_at DESC"
-    );
+    const [rows] = await pool.query(`
+  SELECT d.*, 
+  COALESCE(ROUND((SELECT AVG(rating) FROM ulasan_destinasi WHERE destinasi_id = d.id), 1), 0) AS rating
+  FROM destinasi_wisata d
+  ORDER BY d.created_at DESC
+`);
+
     res.json({ data: rows });
   } catch (err) {
     console.error("Gagal mengambil data destinasi:", err);
